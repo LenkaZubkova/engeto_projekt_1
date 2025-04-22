@@ -1,7 +1,7 @@
 """
 projekt_1.py: první projekt do Engeto Online Python Akademie
 
-author: Lenka Zubková
+author: Lenka Zúbková
 email: lenka_zubkova@hotmail.com
 """
 
@@ -33,7 +33,6 @@ TEXTS = [
     garpike and stingray are also present.'''
 ]
 
-# Registrovani uzivatele
 users = {
     'bob': '123',
     'ann': 'pass123',
@@ -41,35 +40,6 @@ users = {
     'liz': 'pass123'
 }
 
-# Funkce pro analyzu textu
-def analyze_text(text):
-    words = text.split()
-    num_words = len(words)
-    titlecase_words = sum(1 for word in words if word.istitle())
-    uppercase_words = sum(1 for word in words if word.isupper())
-    lowercase_words = sum(1 for word in words if word.islower())
-    numeric_strings = sum(1 for word in words if word.isdigit())
-    sum_numbers = sum(int(word) for word in words if word.isdigit())
-    
-    print(f"There are {num_words} words in the selected text.")
-    print(f"There are {titlecase_words} titlecase words.")
-    print(f"There are {uppercase_words} uppercase words.")
-    print(f"There are {lowercase_words} lowercase words.")
-    print(f"There are {numeric_strings} numeric strings.")
-    print(f"The sum of all the numbers {sum_numbers}")
-    
-    # Sloupcový graf
-    word_lengths = [len(word) for word in words]
-    unique_lengths = sorted(set(word_lengths))
-    
-    print(40 * "-")
-    print("LEN|  OCCURENCES  |NR.")
-    print(40 * "-")
-    for length in unique_lengths:
-        occurrences = word_lengths.count(length)
-        print(f"{length:3}| {'*' * occurrences:<15} |{occurrences}")
-
-# Hlavni program
 username = input("username:")
 password = input("password:")
 
@@ -78,14 +48,35 @@ if username in users and users[username] == password:
     print(f"Welcome to the app, {username}")
     print("We have 3 texts to be analyzed.")
     print(40 * "-")
-    try:
-        text_choice = int(input("Enter a number btw. 1 and 3 to select: "))
-        if text_choice < 1 or text_choice > 3:
-            print("Invalid choice, terminating the program..")
-        else:
-            print(40 * "-")
-            analyze_text(TEXTS[text_choice - 1])
-    except ValueError:
-        print("Invalid input, terminating the program..")
+
+    text_choice = int(input("Enter a number btw. 1 and 3 to select: "))
+    if text_choice < 1 or text_choice > 3:
+        print("Invalid choice, terminating the program..")
+    else:
+        print(40 * "-")
+        selected_text = TEXTS[text_choice - 1]
+        words = selected_text.split()
+        num_words = len(words)
+        titlecase_words = sum(1 for word in words if word.istitle())
+        uppercase_words = sum(1 for word in words if word.isupper())
+        lowercase_words = sum(1 for word in words if word.islower())
+        numeric_strings = sum(1 for word in words if word.isdigit())
+        sum_numbers = sum(int(word) for word in words if word.isdigit())
+           
+        print(f"There are {num_words} words in the selected text.")
+        print(f"There are {titlecase_words} titlecase words.")
+        print(f"There are {uppercase_words} uppercase words.")
+        print(f"There are {lowercase_words} lowercase words.")
+        print(f"There are {numeric_strings} numeric strings.")
+        print(f"The sum of all the numbers {sum_numbers}")
+            
+        word_lengths = [len(word) for word in words]
+        print(40 * "-")
+        print("LEN| OCCURENCES      |NR.")
+        print(40 * "-")
+        for length in range(1, max(word_lengths) + 1):
+            occurrences = word_lengths.count(length)
+            if occurrences > 0:
+                print(f"{length:3}| {'*' * occurrences:<15} |{occurrences}")
 else:
     print("unregistered user, terminating the program..")
