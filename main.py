@@ -4,7 +4,7 @@ projekt_1.py: první projekt do Engeto Online Python Akademie
 author: Lenka Zúbková
 email: lenka_zubkova@hotmail.com
 """
-
+# Definice textů k analýze
 TEXTS = [
     '''Situated about 10 miles west of Kemmerer,
     Fossil Butte is a ruggedly impressive
@@ -33,6 +33,7 @@ TEXTS = [
     garpike and stingray are also present.'''
 ]
 
+# Definice uživatelů a jejich hesel
 users = {
     'bob': '123',
     'ann': 'pass123',
@@ -40,37 +41,70 @@ users = {
     'liz': 'pass123'
 }
 
+# Získání uživatelského jména a hesla od uživatele
 username = input("username:")
 password = input("password:")
 
+# Ověření, zda uživatelské jméno a heslo jsou správné
 if username in users and users[username] == password:
     print(40 * "-")
     print(f"Welcome to the app, {username}")
     print("We have 3 texts to be analyzed.")
     print(40 * "-")
 
-    text_choice = int(input("Enter a number btw. 1 and 3 to select: "))
-    if text_choice < 1 or text_choice > 3:
-        print("Invalid choice, terminating the program..")
-    else:
+    try:
+        # Získání volby textu od uživatele a její převod na celé číslo
+        while True:
+            # Získání volby textu od uživatele a její převod na celé číslo
+            text_choice = input("Enter a number btw. 1 and 3 to select: ")
+            if not text_choice.isdigit():
+                print("Invalid input, please enter a number between 1 and 3.")
+                continue  # Pokračuje na další iteraci smyčky
+            text_choice = int(text_choice)
+            # Ověření, zda je volba textu v platném rozsahu
+            if text_choice < 1 or text_choice > 3:
+                print("Invalid choice, please enter a number between 1 and 3.")
+            else:
+                break  # Platný vstup, ukončí smyčku
+
         print(40 * "-")
+        # Výběr textu na základě volby uživatele
         selected_text = TEXTS[text_choice - 1]
+        # Rozdělení textu na jednotlivá slova
         words = selected_text.split()
-        num_words = len(words)
-        titlecase_words = sum(1 for word in words if word.istitle())
-        uppercase_words = sum(1 for word in words if word.isupper())
-        lowercase_words = sum(1 for word in words if word.islower())
-        numeric_strings = sum(1 for word in words if word.isdigit())
-        sum_numbers = sum(int(word) for word in words if word.isdigit())
-           
+
+        # Inicializace statistik
+        num_words = 0
+        titlecase_words = 0
+        uppercase_words = 0
+        lowercase_words = 0
+        numeric_strings = 0
+        sum_numbers = 0
+        word_lengths = []
+
+        # Cyklus pro výpočet statistik
+        for word in words:
+            num_words += 1
+            word_lengths.append(len(word))
+            if word.istitle():
+                titlecase_words += 1
+            if word.isupper():
+                uppercase_words += 1
+            if word.islower():
+                lowercase_words += 1
+            if word.isdigit():
+                numeric_strings += 1
+                sum_numbers += int(word)
+               
+        # Výpis statistik
         print(f"There are {num_words} words in the selected text.")
         print(f"There are {titlecase_words} titlecase words.")
         print(f"There are {uppercase_words} uppercase words.")
         print(f"There are {lowercase_words} lowercase words.")
         print(f"There are {numeric_strings} numeric strings.")
         print(f"The sum of all the numbers {sum_numbers}")
-            
-        word_lengths = [len(word) for word in words]
+
+        # Výpis tabulky délek slov    
         print(40 * "-")
         print("LEN| OCCURENCES      |NR.")
         print(40 * "-")
@@ -78,5 +112,7 @@ if username in users and users[username] == password:
             occurrences = word_lengths.count(length)
             if occurrences > 0:
                 print(f"{length:3}| {'*' * occurrences:<15} |{occurrences}")
+    except ValueError:
+        print("Invalid input, please enter a number between 1 and 3.")
 else:
     print("unregistered user, terminating the program..")
